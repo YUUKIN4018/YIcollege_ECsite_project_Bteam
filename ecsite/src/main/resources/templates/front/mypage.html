@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>マイページ | ECサイト</title>
+  <style>
+    /* リセット＆ベース */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family:'Meiryo','Segoe UI',sans-serif;
+      background:#f5f5f5; color:#333;
+      display:flex; flex-direction:column; min-height:100vh;
+    }
+
+    /* ヘッダー */
+    header {
+      background:#ddd; padding:12px 24px;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .logo { font-size:1.4em; font-weight:bold; }
+    nav { display:flex; gap:16px; }
+    nav a { text-decoration:none; color:#333; font-size:1em; }
+    nav a:hover { text-decoration:underline; }
+
+    /* メイン */
+    main {
+      flex:1; display:flex; justify-content:center; align-items:center;
+      padding:40px 24px;
+    }
+
+    .mypage-box {
+      background:#fff; border:1px solid #999;
+      border-radius:8px; padding:40px 32px;
+      width:360px; text-align:center;
+      box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    }
+    .mypage-box h2 {
+      margin-bottom:24px; font-size:1.4em; color:#333;
+    }
+    .user-name {
+      margin-bottom:32px; font-size:1.1em; color:#444;
+    }
+
+    .btn {
+      display:block; width:100%; padding:10px 0;
+      margin-bottom:16px;
+      background:#4a90e2; color:#fff;
+      border:none; border-radius:4px;
+      font-size:1em; text-decoration:none;
+      cursor:pointer;
+    }
+    .btn:hover { background:#357ab8; }
+
+    /* フッター */
+    footer {
+      background:#ddd; text-align:center;
+      padding:12px 0; font-size:0.9em;
+    }
+    .footer-links { display:flex; justify-content:center; gap:24px; }
+    .footer-links a { text-decoration:none; color:#333; }
+    .footer-links a:hover { text-decoration:underline; }
+  </style>
+</head>
+<body>
+
+  <!-- ヘッダー -->
+  <header>
+    <div class="logo">ECサイトロゴ</div>
+    <nav>
+      <a th:href="@{/products}">商品一覧</a>
+      <a th:href="@{/logout-confirm}">ログアウト</a>
+      <a th:href="@{/cart}">🛒 カート</a>
+    </nav>
+  </header>
+
+  <!-- メイン -->
+  <main>
+    <div class="mypage-box">
+      <h2>マイページ</h2>
+      <!-- ユーザー名表示 -->
+      <div class="user-name">
+        ユーザー名：<span th:text="${#httpServletRequest.remoteUser}">山田 太郎</span>
+      </div>
+      <!-- ボタン -->
+      <a th:href="@{/user/edit}" class="btn">ユーザー情報</a>
+      <a th:href="@{/orders/history}" class="btn">購入履歴確認</a>
+    </div>
+  </main>
+
+  <!-- フッター -->
+  <footer>
+    <div class="footer-links">
+      <a th:href="@{/terms}">利用規約</a>
+      <a th:href="@{/contact}">お問い合わせ</a>
+    </div>
+  </footer>
+
+</body>
+</html>

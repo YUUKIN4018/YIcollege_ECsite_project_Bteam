@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>購入履歴 | ECサイト</title>
+  <style>
+    /* ベースリセット */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family:'Meiryo','Segoe UI',sans-serif;
+      background:#f5f5f5; color:#333;
+      display:flex; flex-direction:column; min-height:100vh;
+    }
+
+    /* ヘッダー */
+    header {
+      background:#ddd; padding:12px 24px;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .logo { font-size:1.4em; font-weight:bold; }
+    nav { display:flex; gap:16px; }
+    nav a { text-decoration:none; color:#333; font-size:1em; }
+    nav a:hover { text-decoration:underline; }
+
+    /* メイン */
+    main {
+      flex:1; padding:40px 24px;
+    }
+    .history-container {
+      max-width:800px; margin:0 auto 40px; display:flex; flex-direction:column; gap:24px;
+    }
+    .order-box {
+      background:#fff; border:1px solid #ccc;
+      border-radius:8px; padding:24px;
+      box-shadow:0 2px 6px rgba(0,0,0,0.1);
+    }
+    .order-header {
+      margin-bottom:16px; font-size:0.95em; color:#555;
+    }
+    .order-header span { margin-right:24px; }
+
+    table {
+      width:100%; border-collapse:collapse; margin-bottom:16px;
+    }
+    table th, table td {
+      padding:8px; border-bottom:1px solid #eee; font-size:0.9em; text-align:left;
+    }
+    table th { background:#f0f0f0; color:#333; font-weight:600; }
+    .summary-row td { font-weight:600; }
+
+    .btn-back {
+      display:inline-block; margin-top:12px;
+      padding:8px 20px; background:#4a90e2; color:#fff;
+      text-decoration:none; border-radius:4px; font-size:0.95em;
+    }
+    .btn-back:hover { background:#357ab8; }
+
+    /* フッター */
+    footer {
+      background:#ddd; text-align:center;
+      padding:12px 0; font-size:0.9em;
+    }
+    .footer-links { display:flex; justify-content:center; gap:24px; }
+    .footer-links a { text-decoration:none; color:#333; }
+    .footer-links a:hover { text-decoration:underline; }
+  </style>
+</head>
+<body>
+
+  <!-- ヘッダー -->
+  <header>
+    <div class="logo">ECサイトロゴ</div>
+    <nav>
+      <a th:href="@{/products}">商品一覧</a>
+      <a th:href="@{/logout-confirm}">ログアウト</a>
+      <a th:href="@{/cart}">🛒 カート</a>
+    </nav>
+  </header>
+
+  <!-- メイン -->
+  <main>
+    <div class="history-container">
+      <h2>購入履歴</h2>
+
+      <!-- 購入履歴がない場合 -->
+      <div th:if="${#lists.isEmpty(orders)}" style="text-align:center; padding:40px 0; color:#777;">
+        購入履歴はありません。
+      </div>
+
+      <!-- 購入履歴リスト -->
+      <div th:each="order : ${orders}">
+        <div class="order-box">
+          <!-- 注文情報ヘッダー -->
+          <div class="order-header">
+            <span>注文日：<span th:text="${#dates.format(order.orderDate,'yyyy/MM/dd')}">2025/06/09</span></span>
+            <span>注文番号：<span th:text="${order.id}">123456</span></span>
+            <span>配送状況：<span th:text="${order.status}">配送中</span></span>
+          </div>
+
+          <!-- 注文明細テーブル -->
+          <table>
+            <thead>
+              <tr>
+                <th>商品</th>
+                <th>数量</th>
+                <th>金額</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="item : ${order.items}">
+                <td th:text="${item.productName}">商品A</td>
+                <td th:text="${item.quantity}">1</td>
+                <td>¥<span th:text="${#numbers.formatInteger(item.unitPrice,'#,###')}">1,000</span></td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr class="summary-row">
+                <td>小計</td>
+                <td></td>
+                <td>¥<span th:text="${#numbers.formatInteger(order.subtotal,'#,###')}">2,500</span></td>
+              </tr>
+              <tr class="summary-row">
+                <td>送料</td>
+                <td></td>
+                <td th:text="${order.shippingFee>0} ? '¥'+#numbers.formatInteger(order.shippingFee,'#,###') : '無料'">無料</td>
+              </tr>
+              <tr class="summary-row">
+                <td>合計</td>
+                <td></td>
+                <td>¥<span th:text="${#numbers.formatInteger(order.total,'#,###')}">2,500</span></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- マイページへ戻る -->
+      <a th:href="@{/mypage}" class="btn-back">マイページへ</a>
+    </div>
+  </main>
+
+  <!-- フッター -->
+  <footer>
+    <div class="footer-links">
+      <a th:href="@{/terms}">利用規約</a>
+      <a th:href="@{/contact}">お問い合わせ</a>
+    </div>
+  </footer>
+
+</body>
+</html>

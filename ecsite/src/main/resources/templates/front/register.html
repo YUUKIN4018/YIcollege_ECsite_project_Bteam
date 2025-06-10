@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>会員登録 | ECサイト</title>
+  <style>
+    /* ベースリセット */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family:'Meiryo','Segoe UI',sans-serif;
+      background:#f5f5f5; color:#333;
+      display:flex; flex-direction:column; min-height:100vh;
+    }
+
+    /* ヘッダー */
+    header {
+      background:#ddd; padding:12px 24px;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .logo { font-size:1.4em; font-weight:bold; }
+    nav a {
+      margin-left:16px; text-decoration:none; color:#333; font-size:1em;
+    }
+    nav a:hover { text-decoration:underline; }
+
+    /* メイン */
+    main {
+      flex:1; display:flex;
+      justify-content:center; align-items:center;
+      padding:40px 24px;
+    }
+    .form-box {
+      background:#fff; border:1px solid #999;
+      border-radius:8px; padding:40px 32px;
+      width:400px; box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    }
+    .form-box h2 {
+      text-align:center; margin-bottom:24px;
+      font-size:1.4em; color:#333;
+    }
+    .field-group { margin-bottom:18px; }
+    .field-group label {
+      display:block; margin-bottom:6px; font-size:1em;
+    }
+    .name-fields {
+      display:flex; gap:8px;
+    }
+    .name-fields input {
+      flex:1; padding:8px 10px; font-size:1em;
+      border:1px solid #bbb; border-radius:4px;
+    }
+    .field-group input[type="text"],
+    .field-group input[type="password"] {
+      width:100%; padding:8px 10px; font-size:1em;
+      border:1px solid #bbb; border-radius:4px;
+    }
+    .error { color:#d8000c; font-size:0.9em; margin-top:4px; }
+
+    .btn-register {
+      width:100%; padding:10px 0; background:#4a90e2; color:#fff;
+      border:none; border-radius:4px; font-size:1em; cursor:pointer;
+    }
+    .btn-register:hover { background:#357ab8; }
+
+    /* フッター */
+    footer {
+      background:#ddd; text-align:center;
+      padding:12px 0; font-size:0.9em;
+    }
+    .footer-links a {
+      margin:0 12px; text-decoration:none; color:#333;
+    }
+    .footer-links a:hover { text-decoration:underline; }
+  </style>
+</head>
+<body>
+
+  <!-- ヘッダー -->
+  <header>
+    <div class="logo">ECサイトロゴ</div>
+    <nav>
+      <a th:href="@{/login}">ログイン</a>
+      <a th:href="@{/register}">会員登録</a>
+      <a th:href="@{/cart}">🛒 カート</a>
+    </nav>
+  </header>
+
+  <!-- メイン -->
+  <main>
+    <div class="form-box">
+      <h2>新規会員登録</h2>
+
+      <!-- 全体エラー -->
+      <div th:if="${registerError}" class="error" th:text="${registerError}"></div>
+
+      <form th:action="@{/register}" method="post" th:object="${registerForm}">
+        <!-- CSRF -->
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+        <!-- ユーザー名（姓・名）-->
+        <div class="field-group">
+          <label>ユーザー名 <span style="color:#d8000c;">※</span></label>
+          <div class="name-fields">
+            <input type="text" placeholder="姓" th:field="*{lastName}" />
+            <input type="text" placeholder="名" th:field="*{firstName}" />
+          </div>
+          <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="error"></div>
+          <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="error"></div>
+        </div>
+
+        <!-- メールアドレス -->
+        <div class="field-group">
+          <label for="email">メールアドレス <span style="color:#d8000c;">※</span></label>
+          <input type="text" id="email" th:field="*{email}" placeholder="example@domain.com"/>
+          <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></div>
+        </div>
+
+        <!-- パスワード -->
+        <div class="field-group">
+          <label for="password">パスワード <span style="color:#d8000c;">※</span></label>
+          <input type="password" id="password" th:field="*{password}" placeholder="8文字以上、英数字混在"/>
+          <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error"></div>
+        </div>
+
+        <!-- 登録ボタン -->
+        <button type="submit" class="btn-register">登録</button>
+      </form>
+    </div>
+  </main>
+
+  <!-- フッター -->
+  <footer>
+    <div class="footer-links">
+      <a th:href="@{/terms}">利用規約</a>
+      <a th:href="@{/contact}">お問い合わせ</a>
+    </div>
+  </footer>
+
+</body>
+</html>

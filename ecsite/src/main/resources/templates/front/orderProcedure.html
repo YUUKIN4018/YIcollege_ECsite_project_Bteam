@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>注文手続き | ECサイト</title>
+  <style>
+    /* ベースリセット */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Meiryo','Segoe UI',sans-serif; background:#f5f5f5; color:#333; display:flex; flex-direction:column; min-height:100vh; }
+
+    /* ヘッダー */
+    header { background:#ddd; padding:12px 24px; display:flex; align-items:center; justify-content:space-between; }
+    .logo { font-size:1.4em; font-weight:bold; }
+    nav a { margin-left:16px; text-decoration:none; color:#333; }
+    nav a:hover { text-decoration:underline; }
+
+    /* メイン */
+    main { flex:1; display:flex; justify-content:center; align-items:start; padding:40px 24px; }
+    .form-container {
+      background:#fff; border:1px solid #ccc; border-radius:8px;
+      padding:32px; width:480px; box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    }
+    .form-container h2 { text-align:center; margin-bottom:24px; font-size:1.4em; color:#333; }
+
+    /* セクション */
+    .section { margin-bottom:24px; }
+    .section-title { font-size:1.1em; margin-bottom:12px; color:#555; border-bottom:1px solid #ddd; padding-bottom:4px; }
+
+    .form-group { margin-bottom:16px; }
+    .form-group label { display:block; margin-bottom:6px; }
+    .form-group input[type="text"],
+    .form-group input[type="tel"],
+    .form-group textarea {
+      width:100%; padding:8px 10px; font-size:1em; border:1px solid #bbb; border-radius:4px;
+    }
+    .form-group textarea { resize:vertical; height:80px; }
+
+    .radio-group { display:flex; gap:16px; }
+    .radio-group label { display:flex; align-items:center; gap:4px; }
+
+    .error { color:#d8000c; font-size:0.9em; margin-top:4px; }
+
+    .btn-submit {
+      width:100%; padding:10px 0; background:#27ae60; color:#fff;
+      border:none; border-radius:4px; font-size:1em; cursor:pointer;
+    }
+    .btn-submit:hover { background:#1e874b; }
+
+    /* フッター */
+    footer { background:#ddd; text-align:center; padding:12px 0; margin-top:auto; font-size:0.9em; }
+    .footer-links a { margin:0 12px; text-decoration:none; color:#333; }
+    .footer-links a:hover { text-decoration:underline; }
+  </style>
+</head>
+<body>
+
+  <!-- ヘッダー -->
+  <header>
+    <div class="logo"><a th:href="@{/}" style="text-decoration:none; color:#333;">ECサイトロゴ</a></div>
+    <nav>
+      <a th:href="@{/mypage}">マイページ</a>
+      <a th:href="@{/cart}">🛒 カート</a>
+    </nav>
+  </header>
+
+  <!-- メイン -->
+  <main>
+    <div class="form-container">
+      <h2>注文手続き</h2>
+
+      <!-- フォーム -->
+      <form th:action="@{/checkout}" th:object="${orderForm}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+        <!-- お届け先情報 -->
+        <div class="section">
+          <div class="section-title">お届け先情報</div>
+          <div class="form-group">
+            <label for="recipient">氏名 <span style="color:#d8000c;">※</span></label>
+            <input type="text" id="recipient" th:field="*{recipient}" placeholder="山田 太郎"/>
+            <div th:if="${#fields.hasErrors('recipient')}" th:errors="*{recipient}" class="error"></div>
+          </div>
+          <div class="form-group">
+            <label for="postalCode">郵便番号 <span style="color:#d8000c;">※</span></label>
+            <input type="text" id="postalCode" th:field="*{postalCode}" placeholder="例：123-4567"/>
+            <div th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}" class="error"></div>
+          </div>
+          <div class="form-group">
+            <label for="address">住所 <span style="color:#d8000c;">※</span></label>
+            <input type="text" id="address" th:field="*{address}" placeholder="東京都○○区○○町1-2-3"/>
+            <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error"></div>
+          </div>
+          <div class="form-group">
+            <label for="phone">電話番号 <span style="color:#d8000c;">※</span></label>
+            <input type="tel" id="phone" th:field="*{phone}" placeholder="09012345678"/>
+            <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error"></div>
+          </div>
+        </div>
+
+        <!-- 配送方法 -->
+        <div class="section">
+          <div class="section-title">配送方法 <span style="color:#d8000c;">※</span></div>
+          <div class="radio-group form-group">
+            <label><input type="radio" th:field="*{deliveryMethod}" value="STANDARD"/> 通常配送</label>
+            <label><input type="radio" th:field="*{deliveryMethod}" value="SCHEDULED"/> 日時指定</label>
+            <label><input type="radio" th:field="*{deliveryMethod}" value="EXPRESS"/> 速達</label>
+          </div>
+          <div th:if="${#fields.hasErrors('deliveryMethod')}" th:errors="*{deliveryMethod}" class="error"></div>
+          <div class="form-group">
+            <label for="deliveryNotes">備考（日時指定など）</label>
+            <textarea id="deliveryNotes" th:field="*{deliveryNotes}"></textarea>
+          </div>
+        </div>
+
+        <!-- お支払い方法 -->
+        <div class="section">
+          <div class="section-title">お支払い方法 <span style="color:#d8000c;">※</span></div>
+          <div class="radio-group form-group">
+            <label><input type="radio" th:field="*{paymentMethod}" value="BANK_TRANSFER"/> 銀行振込</label>
+            <label><input type="radio" th:field="*{paymentMethod}" value="COD"/> 代金引換（代引手数料+¥330）</label>
+          </div>
+          <div th:if="${#fields.hasErrors('paymentMethod')}" th:errors="*{paymentMethod}" class="error"></div>
+        </div>
+
+        <!-- 次へ -->
+        <button type="submit" class="btn-submit">ご注文内容確認へ</button>
+      </form>
+    </div>
+  </main>
+
+  <!-- フッター -->
+  <footer>
+    <div class="footer-links">
+      <a th:href="@{/terms}">利用規約</a>
+      <a th:href="@{/contact}">お問い合わせ</a>
+    </div>
+  </footer>
+
+</body>
+</html>

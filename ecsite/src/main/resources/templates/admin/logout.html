@@ -4,50 +4,60 @@
   <meta charset="UTF-8"/>
   <title>管理者ログアウト確認</title>
   <style>
-    /* 全体リセット＆ベース */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    html, body {
-      height: 100%;
-    }
+    /*―― 共通：リセット＆ベース設定 ――*/
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html, body { height:100%; }
     body {
+      /* このページ固有の背景色 */
       background-color: #bbb;
-      font-family: 'Meiryo','Segoe UI',sans-serif;
+      font-family: "Meiryo","Segoe UI",sans-serif;
       display: flex;
       flex-direction: column;
     }
 
-    /* ヘッダー */
+    /*―― 共通：ヘッダー ――*/
     .header {
       background-color: #cccccc;
       padding: 16px 24px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
     }
-    .header .logo {
-      font-size: 1.2em;
-      font-weight: bold;
+    .header .logo img {
+      height: 32px;
+    }
+    .header .logout-link {
+      font-size: 1em;
+      color: #333;
+      text-decoration: none;
+    }
+    .header .logout-link:hover {
+      text-decoration: underline;
     }
 
-    /* メイン */
+    /*―― 共通：フッター ――*/
+    .footer {
+      background-color: #cccccc;
+      text-align: center;
+      padding: 12px 0;
+      font-size: 0.85em;
+      color: #555555;
+    }
+
+    /*―― ページ固有：モーダル ――*/
     .main {
       flex: 1;
       position: relative;
     }
-
     .modal-overlay {
       position: fixed;
-      top: 48px;
+      top: 64px; /* ヘッダー高(48px)＋余白 */
       left: 0;
       width: 100%;
-      height: calc(100% - 96px);
+      height: calc(100% - 64px - 48px); /* ヘッダー＋フッター分を除く */
       background: rgba(0,0,0,0.15);
       z-index: 10;
     }
-
     .modal-box {
       position: fixed;
       top: 50%;
@@ -61,11 +71,9 @@
       z-index: 20;
       overflow: hidden;
     }
-
     .modal-content {
       padding: 28px 32px;
     }
-
     .modal-close {
       position: absolute;
       top: 12px;
@@ -78,7 +86,6 @@
     .modal-close:hover {
       color: #333;
     }
-
     .modal-header {
       margin-bottom: 16px;
     }
@@ -87,7 +94,6 @@
       text-align: center;
       color: #222;
     }
-
     .modal-body {
       margin-bottom: 24px;
       text-align: center;
@@ -96,11 +102,10 @@
       font-size: 1.2em;
       color: #333;
     }
-
-    /* ボタン等幅 */
     .modal-footer {
       display: flex;
       gap: 24px;
+      padding: 0 32px 28px;
     }
     .modal-footer > a,
     .modal-footer > form {
@@ -126,21 +131,11 @@
     }
     .modal-footer form button {
       flex: 1;
-      border: 2px solid #666;
     }
     .modal-footer a:hover,
     .modal-footer form button:hover {
       background-color: #f0f0f0;
       border-color: #444;
-    }
-
-    /* フッター */
-    .footer {
-      background-color: #cccccc;
-      text-align: center;
-      padding: 12px 0;
-      font-size: 0.85em;
-      color: #555;
     }
   </style>
 </head>
@@ -149,21 +144,19 @@
   <!-- ヘッダー -->
   <header class="header">
     <div class="logo">
-      <a th:href="@{/}">
-        <img th:src="@{/images/YIロゴ.png}" alt="Y&amp;I Group" style="height:32px;"/>
+      <a th:href="@{/admin/dashboard}">
+        <img th:src="@{/images/YIロゴ.png}" alt="Y&I Group" />
       </a>
     </div>
+    <!-- ログアウト確認ページではログアウトリンクは不要 -->
   </header>
 
   <!-- メイン -->
   <div class="main">
-    <!-- オーバーレイ -->
     <div class="modal-overlay"></div>
 
-    <!-- モーダル -->
     <div class="modal-box">
       <a th:href="@{/admin/dashboard}" class="modal-close" title="閉じる">&times;</a>
-
       <div class="modal-content">
         <div class="modal-header">
           <h2>管理者ログアウト</h2>
@@ -171,12 +164,8 @@
         <div class="modal-body">
           <p>セッションを終了しますか？</p>
         </div>
-
         <div class="modal-footer">
-          <!-- キャンセル -->
           <a th:href="@{/admin/dashboard}">キャンセル</a>
-
-          <!-- ログアウト実行 -->
           <form th:action="@{/admin/logout}" method="post">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
             <button type="submit">ログアウト</button>
@@ -187,9 +176,7 @@
   </div>
 
   <!-- フッター -->
-  <div class="footer">
-    © 2025 Y&amp;I Group Inc.
-  </div>
+  <footer class="footer">© 2025 Y&I Group Inc.</footer>
 
 </body>
 </html>

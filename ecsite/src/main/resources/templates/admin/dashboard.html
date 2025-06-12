@@ -4,63 +4,74 @@
   <meta charset="UTF-8"/>
   <title>管理者ダッシュボード</title>
   <style>
-    /* 全体リセット */
+    /*―― 共通：リセット＆ベース設定 ――*/
     * { margin:0; padding:0; box-sizing:border-box; }
     html, body { height:100%; }
     body {
-      font-family:'Meiryo','Segoe UI',sans-serif;
-      display:flex; flex-direction:column;
-      background:#f5f5f5;
+      background-color: #f5f5f5;
+      font-family: "Meiryo", "Segoe UI", sans-serif;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* ヘッダー */
+    /*―― 共通：ヘッダー ――*/
     .header {
       background-color: #cccccc;
       padding: 16px 24px;
       display: flex;
-      align-items:center; 
-      justify-content:space-between;
+      align-items: center;
+      justify-content: space-between;
     }
     .header .logo img {
-      font-size: 1.2em;
-      font-weight: bold;
+      height: 32px;
     }
     .header .logout-link {
-      font-size:1em; color:#333; text-decoration:none;
+      font-size: 1em;
+      color: #333;
+      text-decoration: none;
     }
     .header .logout-link:hover {
-      text-decoration:underline;
+      text-decoration: underline;
     }
 
-    /* メイン */
+    /*―― 共通：フッター ――*/
+    .footer {
+      background-color: #cccccc;
+      text-align: center;
+      padding: 12px 0;
+      font-size: 0.85em;
+      color: #555555;
+    }
+
+    /*―― ページ固有：ダッシュボード ――*/
     .container {
-      flex:1;
-      display:flex; flex-direction:column;
-      align-items:center; justify-content:center;
-      padding:40px 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
     }
     .title {
-      font-size:1.8em; margin-bottom:32px; color:#222;
+      font-size: 1.8em;
+      margin-bottom: 32px;
+      color: #222;
     }
     .actions {
-      display:flex; gap:40px;
+      display: flex;
+      gap: 40px;
     }
     .actions a {
-      padding:16px 32px; font-size:1.1em;
-      border:2px solid #333; border-radius:6px;
-      background:#fff; color:#333; text-decoration:none;
+      padding: 16px 32px;
+      font-size: 1.1em;
+      border: 2px solid #333;
+      border-radius: 6px;
+      background: #fff;
+      color: #333;
+      text-decoration: none;
     }
     .actions a:hover {
-      background:#f0f0f0;
-    }
-
-    /* フッター */
-    .footer {
-      background:#ccc;
-      padding:12px 0;
-      text-align:center;
-      font-size:0.85em;
-      color:#555;
+      background: #f0f0f0;
     }
   </style>
 </head>
@@ -69,7 +80,7 @@
   <header class="header">
     <div class="logo">
       <a th:href="@{/admin/dashboard}">
-        <img th:src="@{/images/YIロゴ.png}" alt="Y&I Group"/>
+        <img th:src="@{/images/YIロゴ.png}" alt="Y&I Group" />
       </a>
     </div>
     <a th:href="@{/admin/logout-confirm}" class="logout-link">ログアウト</a>
@@ -85,8 +96,6 @@
   </main>
 
   <!-- フッター -->
-  <footer class="footer">
-    © 2025 Y&I Group Inc.
-  </footer>
+  <footer class="footer">© 2025 Y&I Group Inc.</footer>
 </body>
 </html>

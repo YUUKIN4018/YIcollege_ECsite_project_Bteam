@@ -1,281 +1,214 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <title>商品管理</title>
-    <style>
-        /* ================================================
-           全体リセット＆ベース設定
-        ================================================ */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        html, body {
-            height: 100%;
-        }
-        body {
-            font-family: 'Meiryo', 'Segoe UI', sans-serif;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            background-color: #f5f5f5;
-            color: #333;
-        }
+  <meta charset="UTF-8"/>
+  <title>商品管理</title>
+  <style>
+    /*―― 共通：リセット＆ベース設定 ――*/
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
+    }
+    body {
+      font-family: "Meiryo","Segoe UI",sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: #f5f5f5;
+      color: #333;
+    }
 
-        /* ================================================
-           ヘッダー（ロゴバー）
-        ================================================ */
-        .header {
-            background-color: #ddd;
-            padding: 12px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .header .logo {
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-        .header .logout {
-            font-size: 0.95em;
-        }
-        .header .logout a {
-            color: #333;
-            text-decoration: none;
-        }
-        .header .logout a:hover {
-            text-decoration: underline;
-        }
+    /*―― ヘッダー＆ナビ＆フッター ――*/
+    .header {
+      background: #cccccc;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header .logo img {
+      height: 32px;
+    }
+    .header .logout-link {
+      font-size: 1em;
+      text-decoration: none;
+      color: #333;
+    }
+    .header .logout-link:hover {
+      text-decoration: underline;
+    }
 
-        /* ================================================
-           ナビゲーション（サイド/上部）
-        ================================================ */
-        .nav {
-            background-color: #34495e;
-            padding: 12px 24px;
-        }
-        .nav a {
-            color: #ecf0f1;
-            text-decoration: none;
-            margin-right: 20px;
-            font-size: 1em;
-        }
-        .nav a:hover {
-            text-decoration: underline;
-        }
+    .nav {
+      background: #34495e;
+      padding: 12px 24px;
+    }
+    .nav a {
+      color: #ecf0f1;
+      text-decoration: none;
+      font-size: 1em;
+    }
+    .nav a:hover {
+      text-decoration: underline;
+    }
 
-        /* ================================================
-           メインコンテンツ領域
-        ================================================ */
-        .container {
-            flex: 1;
-            width: 90%;
-            max-width: 1200px;
-            margin: 24px auto;
-            background-color: #fff;
-            padding: 24px;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
+    .footer {
+      background: #cccccc;
+      text-align: center;
+      padding: 12px 0;
+      font-size: 0.85em;
+      color: #555;
+    }
 
-        .container h2 {
-            margin-bottom: 20px;
-            font-size: 1.5em;
-            color: #2c3e50;
-        }
+    /*―― コンテナ ――*/
+    .container {
+      flex: 1;
+      width: 90%;
+      max-width: 1200px;
+      margin: 24px auto;
+      background: #fff;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .container h2 {
+      font-size: 1.5em;
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+    .create-button {
+      margin-bottom: 16px;
+    }
+    .create-button a {
+      display: inline-block;
+      padding: 8px 16px;
+      background: #27ae60;
+      color: #fff;
+      border-radius: 4px;
+      text-decoration: none;
+    }
+    .create-button a:hover {
+      background: #1e874b;
+    }
 
-        /* 検索／フィルターエリア */
-        .filter-form {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin-bottom: 20px;
-            align-items: center;
-        }
-        .filter-form .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-        .filter-form label {
-            font-size: 0.95em;
-            margin-bottom: 4px;
-        }
-        .filter-form input[type="text"],
-        .filter-form select {
-            padding: 6px 8px;
-            font-size: 1em;
-            border: 1px solid #bbb;
-            border-radius: 4px;
-            min-width: 180px;
-        }
-        .filter-form button {
-            padding: 8px 16px;
-            font-size: 1em;
-            background-color: #4a90e2;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            align-self: flex-end;
-        }
-        .filter-form button:hover {
-            background-color: #357ab8;
-        }
+    /*―― テーブル ――*/
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      table-layout: fixed;
+    }
+    table th {
+      padding: 12px 8px;
+      background: #ecf0f1;
+      color: #2c3e50;
+      font-weight: 600;
+      width: 12.5%;
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    table td {
+      padding: 12px 8px;
+      border-bottom: 1px solid #eee;
+      font-size: 0.95em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    table tbody tr:hover {
+      background: #f0f8ff;
+    }
 
-        /* 商品一覧テーブル */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 12px;
-        }
-        table th,
-        table td {
-            padding: 12px 8px;
-            border-bottom: 1px solid #eee;
-            text-align: left;
-            font-size: 0.95em;
-        }
-        table th {
-            background-color: #ecf0f1;
-            color: #2c3e50;
-            font-weight: 600;
-        }
-        table tbody tr:hover {
-            background-color: #f0f8ff;
-        }
+    /*―― 操作列：縦並び ――*/
+    td.action-buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 12px 0;
+    }
+    .action-buttons a,
+    .action-buttons button {
+      width: 60px;
+      padding: 6px 0;
+      font-size: 0.9em;
+      border: 1px solid #666;
+      border-radius: 4px;
+      background: #fff;
+      text-align: center;
+      cursor: pointer;
+    }
+    .action-buttons a:hover,
+    .action-buttons button:hover {
+      background: #f0f0f0;
+    }
 
-        /* 操作ボタン */
-        .action-buttons a,
-        .action-buttons button {
-            margin-right: 8px;
-            padding: 6px 12px;
-            font-size: 0.9em;
-            border: 1px solid #666;
-            border-radius: 4px;
-            background-color: #fff;
-            color: #333;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .action-buttons a:hover,
-        .action-buttons button:hover {
-            background-color: #f0f0f0;
-            border-color: #444;
-        }
-
-        /* 新規登録ボタン */
-        .create-button {
-            margin-bottom: 16px;
-        }
-        .create-button a {
-            display: inline-block;
-            padding: 8px 16px;
-            font-size: 1em;
-            background-color: #27ae60;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .create-button a:hover {
-            background-color: #1e874b;
-        }
-
-        /* ページネーション（例） */
-        .pagination {
-            margin-top: 20px;
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
-        }
-        .pagination a {
-            padding: 6px 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            text-decoration: none;
-            color: #333;
-            font-size: 0.9em;
-        }
-        .pagination a:hover {
-            background-color: #f0f0f0;
-            border-color: #999;
-        }
-        .pagination .current {
-            background-color: #ecf0f1;
-            border-color: #999;
-            pointer-events: none;
-        }
-
-        /* ================================================
-           フッター
-        ================================================ */
-        .footer {
-            background-color: #888;
-            text-align: center;
-            padding: 12px 0;
-            font-size: 0.85em;
-            color: #eee;
-        }
-    </style>
+    /*―― ページネーション ――*/
+    .pagination {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      font-size: 0.9em;
+    }
+    .pagination a,
+    .pagination span {
+      padding: 6px 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      text-decoration: none;
+      color: #333;
+    }
+    .pagination a:hover {
+      background: #f0f0f0;
+    }
+    .pagination .disabled {
+      color: #999;
+      border-color: #eee;
+      pointer-events: none;
+      background: #fafafa;
+    }
+    .pagination .current {
+      background: #ecf0f1;
+      border-color: #999;
+      pointer-events: none;
+    }
+  </style>
 </head>
 <body>
-    <!-- ヘッダー -->
-    <div class="header">
-        <div class="logo">Y&I Group</div>
-        <div class="logout"><a th:href="@{/admin/logout-confirm}">ログアウト</a></div>
+
+  <!-- ヘッダー -->
+  <header class="header">
+    <div class="logo">
+      <a th:href="@{/admin/dashboard}">
+        <img th:src="@{/images/YIロゴ.png}" alt="Y&I Group"/>
+      </a>
+    </div>
+    <a th:href="@{/admin/logout-confirm}" class="logout-link">ログアウト</a>
+  </header>
+
+  <!-- ナビ -->
+  <nav class="nav">
+    <a th:href="@{/admin/dashboard}">ホーム</a>
+  </nav>
+
+  <!-- コンテンツ -->
+  <div class="container">
+    <h2>商品管理</h2>
+
+    <div class="create-button">
+      <a th:href="@{/admin/products/new}">新規登録</a>
     </div>
 
-    <!-- グローバルナビゲーション -->
-    <div class="nav">
-        <a th:href="@{/admin/dashboard}">ホーム</a>
-    </div>
-
-    <!-- メインコンテンツ -->
-    <div class="container">
-        <h2>商品管理</h2>
-
-        <!-- 新規商品登録ボタン -->
-        <div class="create-button">
-            <a th:href="@{/admin/products/new}">新規登録</a>
-        </div>
-
-        <!-- フィルター / 検索フォーム -->
-        <form th:action="@{/admin/products}" method="get" class="filter-form">
-            <div class="form-group">
-                <label for="keyword">キーワード</label>
-                <input type="text" id="keyword" name="keyword" th:value="${keyword}" placeholder="商品名・説明など"/>
-            </div>
-            <div class="form-group">
-                <label for="category">カテゴリ</label>
-                <select id="category" name="category">
-                    <option value="" th:text="${category == null} ? 'すべて' : 'すべて'">すべて</option>
-                    <!-- カテゴリ一覧をモデルから渡す例 -->
-                    <option th:each="cat : ${categories}"
-                            th:value="${cat.id}"
-                            th:text="${cat.name}"
-                            th:selected="${cat.id == category}">
-                    </option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="status">ステータス</label>
-                <select id="status" name="status">
-                    <option value="" th:selected="${status == null}">すべて</option>
-                    <option value="ACTIVE" th:selected="${status == 'ACTIVE'}">表示</option>
-                    <option value="INACTIVE" th:selected="${status == 'INACTIVE'}">非表示</option>
-                </select>
-            </div>
-            <button type="submit">検索</button>
-        </form>
-
-       <!-- 商品一覧テーブル -->
     <table>
       <thead>
         <tr>
-          <th>商品画像</th>
+          <th>画像</th>
           <th>商品ID</th>
           <th>商品名</th>
           <th>カテゴリ</th>
@@ -286,61 +219,50 @@
         </tr>
       </thead>
       <tbody>
-        <tr th:each="product : ${products}">
-          <!-- 追加した列：商品画像 -->
+        <!-- 商品がない場合 -->
+        <tr th:if="${productPage.content.empty}">
+          <td colspan="8" style="text-align:center; padding:16px;">
+            該当する商品がありません。
+          </td>
+        </tr>
+        <!-- 商品がある場合 -->
+        <tr th:each="product : ${productPage.content}" th:unless="${productPage.content.empty}">
           <td>
-            <img th:if="${product.imageUrl != null}"
+            <img th:if="${product.imageUrl}"
                  th:src="@{${product.imageUrl}}"
                  alt="商品画像"
                  style="width:60px; height:60px; object-fit:cover;"/>
-            <span th:if="${product.imageUrl == null}"
-                  style="color:#999;">―</span>
+            <span th:if="${!product.imageUrl}" style="color:#999;">―</span>
           </td>
-
-          <td th:text="${product.id}">1</td>
-          <td th:text="${product.name}">サンプル商品</td>
-          <td th:text="${product.categoryName}">家電</td>
-          <td>¥<span th:text="${product.price}">0</span></td>
-          <td th:text="${product.stock}">0</td>
-          <td th:text="${product.status == 'ACTIVE' ? '表示' : '非表示'}">表示</td>
+          <td th:text="${product.id}"></td>
+          <td th:text="${product.name}"></td>
+          <td th:text="${product.categoryName}"></td>
+          <td>¥<span th:text="${product.price}"></span></td>
+          <td th:text="${product.stock}"></td>
+          <td th:text="${product.status == 'ACTIVE' ? '表示' : '非表示'}"></td>
           <td class="action-buttons">
             <a th:href="@{|/admin/products/edit/${product.id}|}">編集</a>
-            <form th:action="@{|/admin/products/delete/${product.id}|}"
-                  method="post"
-                  style="display:inline">
-              <input type="hidden"
-                     th:name="${_csrf.parameterName}"
-                     th:value="${_csrf.token}" />
-              <button type="submit"
-                      onclick="return confirm('本当に削除しますか？')">
-                削除
-              </button>
+            <form th:action="@{|/admin/products/delete/${product.id}|}" method="post">
+              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+              <button type="submit" onclick="return confirm('本当に削除しますか？')">削除</button>
             </form>
-          </td>
-        </tr>
-        <tr th:if="${#lists.isEmpty(products)}">
-          <td colspan="8"
-              style="text-align:center; padding:16px;">
-            該当する商品がありません。
           </td>
         </tr>
       </tbody>
     </table>
 
-        <!-- ページネーション（例） -->
-        <div class="pagination">
-            <!-- ページ番号モデル例：pageNumbers, currentPage -->
-            <a th:each="pageNum : ${pageNumbers}"
-               th:classappend="${pageNum == currentPage} ? ' current' : ''"
-               th:href="@{|/admin/products?page=${pageNum}&keyword=${keyword}&category=${category}&status=${status}|}"
-               th:text="${pageNum}">
-            </a>
-        </div>
+    <!-- ページネーション -->
+    <div class="pagination" th:if="${productPage.totalPages > 1}">
+      <a th:href="@{/admin/inventory(page=${productPage.number-1})}"
+         th:classappend="${!productPage.hasPrevious()} ? ' disabled' : ''">&lt;</a>
+      <span th:text="${productPage.number + 1} + ' / ' + ${productPage.totalPages}">1 / N</span>
+      <a th:href="@{/admin/inventory(page=${productPage.number+1})}"
+         th:classappend="${!productPage.hasNext()} ? ' disabled' : ''">&gt;</a>
     </div>
 
-    <!-- フッター -->
-    <div class="footer">
-        © 2025 Y&I Group Inc.
-    </div>
+  </div>
+
+  <!-- フッター -->
+  <footer class="footer">© 2025 Y&I Group Inc.</footer>
 </body>
 </html>

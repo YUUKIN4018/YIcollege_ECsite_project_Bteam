@@ -5,7 +5,6 @@ import java.util.List;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,7 +19,7 @@ import com.college.yi.ecsite.admin.repositoty.ProductMapper;
 import com.college.yi.ecsite.admin.service.AdminStockService;
 import com.college.yi.ecsite.entity.Product;
 import com.college.yi.ecsite.exception.StockUpdateException;
-@PreAuthorize("hasRole('ADMIN')")
+//@PreAuthorize("hasRole('ADMIN')")
 @Controller
 @RequestMapping("api/admin/products")
 public class AdminStockController {

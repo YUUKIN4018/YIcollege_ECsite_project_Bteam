@@ -2,7 +2,9 @@ package com.college.yi.ecsite.admin.repositoty;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -26,4 +28,13 @@ public interface ProductMapper {
     //在庫数更新
     @Update("UPDATE product SET stock_quantity = #{stockQuantity}, updated_at = CURRENT_TIMESTAMP WHERE product_id = #{productId}")
     int updateStockQuantity(@Param("productId") Long ProductId, @Param("stockQuantity") Integer stockQuantity);
-}
+    
+     @Insert("""
+            INSERT INTO products (shop_id, category_id, name, description, price, tax_rate, stock_quantity, status)
+            VALUES (1, #{categoryId}, #{name}, #{description}, #{price}, 10.0, 0, 1)
+            RETURNING product_id""")
+        @Options(useGeneratedKeys = true, keyProperty = "productId")
+        void insert(Product product);
+    }
+
+

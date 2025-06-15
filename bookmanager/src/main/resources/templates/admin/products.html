@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>商品管理</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1 style="text-align:center;">商品管理</h1>
+    <div style="text-align:center; margin-bottom:20px;">
+        <a th:href="@{/admin/products/new}">
+            <button type="button">新規商品登録</button>
+        </a>
+    </div>
+    <table border="1" align="center" cellpadding="10" cellspacing="0">
+        <thead>
+            <tr>
+                <th>商品画像</th>
+                <th>商品ID</th>
+                <th>商品名</th>
+                <th>商品説明</th>
+                <th>税込価格</th>
+                <th>編集</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 商品がない場合 -->
+            <tr th:if="${#lists.isEmpty(productList)}">
+                <td colspan="6" align="center">現在登録されている商品はありません</td>
+            </tr>
+            <!-- 商品がある場合 -->
+            <tr th:each="item : ${productList}">
+                <td align="center">
+                    <span th:if="${item.imageUrl == null}">画像</span>
+                    <img th:if="${item.imageUrl != null}" th:src="${item.imageUrl}" alt="商品画像" width="60" height="60">
+                </td>
+                <td th:text="${item.productId}" align="center"></td>
+                <td th:text="${item.name}" align="center"></td>
+                <td th:text="${item.description}" align="center"></td>
+                <td th:text="'￥' + ${#numbers.formatInteger(item.price, 1, 'COMMA')}" align="center"></td>
+                <td align="center">
+                    <a th:href="@{'/admin/products/' + ${item.productId} + '/edit'}"><button type="button">編集</button></a><br>
+                    <a href="#" th:onclick="'confirmDelete(' + ${item.productId} + ');return false;'">削除</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <div align="center">
+        <a th:if="${currentPage > 1}" th:href="@{/admin/products(page=${currentPage - 1})}">&lt;</a>
+        <span th:text="${currentPage}"></span>
+        <a th:href="@{/admin/products(page=${currentPage + 1})}">&gt;</a>
+    </div>
+    <br>
+    <div align="center">&copy; 2025 Y&I Inc.</div>
+    <script>
+    function confirmDelete(productId) {
+        if (confirm('本当に削除しますか？')) {
+            window.location.href = '/admin/products/' + productId + '/delete';
+        }
+    }
+    </script>
+</body>
+</html>

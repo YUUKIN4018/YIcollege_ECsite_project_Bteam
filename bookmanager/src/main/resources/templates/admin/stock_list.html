@@ -51,7 +51,7 @@
                 <tr th:each="product : ${products}">
                     <td class="image-cell">
                         <!-- 商品画像がある場合のみ表示、なければダミー画像 -->
-                        <img th:src="${product.imageUrl != null ? product.imageUrl : '/img/no-image.png'}" alt="商品画像">
+                        <img th:src="${productimage.imageUrl != null ? item.imageUrl : '/img/no-image.png'}" alt="商品画像">
                     </td>
                     <td th:text="${product.productId}"></td>
                     <td th:text="${product.name}"></td>

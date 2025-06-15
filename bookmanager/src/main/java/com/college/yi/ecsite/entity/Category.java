@@ -1,17 +1,16 @@
-package com.college.yi.ecsite.admin.dto;
+package com.college.yi.ecsite.entity;
 
 import java.time.LocalDateTime;
 
 import lombok.Data;
 
 @Data
-public class AdminProductListDto {
-    private Long productId;
+public class Category {
+    private Long categoryId;
     private Long parentCategoryId;
     private String name;
-    private String imageUrl;
     private String description;
-    private Integer price;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
+

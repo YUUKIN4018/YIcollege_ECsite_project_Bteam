@@ -4,76 +4,137 @@
   <meta charset="UTF-8"/>
   <title>購入履歴 | ECサイト</title>
   <style>
-    /* ベースリセット */
-    * { margin:0; padding:0; box-sizing:border-box; }
+    /*―― 共通：リセット＆ベース設定 ――*/
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
     body {
-      font-family:'Meiryo','Segoe UI',sans-serif;
-      background:#f5f5f5; color:#333;
-      display:flex; flex-direction:column; min-height:100vh;
+      font-family: "Meiryo","Segoe UI",sans-serif;
+      display: flex; flex-direction: column;
+      min-height: 100vh;
+      background-color: #f5f5f5;
+      color: #333;
     }
 
-    /* ヘッダー */
-    header {
-      background:#ddd; padding:12px 24px;
-      display:flex; align-items:center; justify-content:space-between;
+    /*―― 統一ヘッダー ――*/
+    .header {
+      background: #cccccc;
+      padding: 16px 24px;
+      display: flex; justify-content: space-between; align-items: center;
     }
-    .logo { font-size:1.4em; font-weight:bold; }
-    nav { display:flex; gap:16px; }
-    nav a { text-decoration:none; color:#333; font-size:1em; }
-    nav a:hover { text-decoration:underline; }
+    .header .logo {
+      font-size: 1.4em; font-weight: bold;
+    }
+    .header .nav-links {
+      display: flex; gap: 0;
+    }
+    .header .nav-links a {
+      display: block; padding: 8px 16px;
+      font-size: 1em; color: #333; text-decoration: none;
+      white-space: nowrap;
+    }
+    .header .nav-links a:hover {
+      background: #e0e0e0;
+    }
 
-    /* メイン */
+    /*―― メイン領域 ――*/
     main {
-      flex:1; padding:40px 24px;
+      flex: 1;
+      padding: 40px 24px;
     }
     .history-container {
-      max-width:800px; margin:0 auto 40px; display:flex; flex-direction:column; gap:24px;
+      max-width: 800px;
+      margin: 0 auto 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .history-container h2 {
+      font-size: 1.5em;
+      color: #2c3e50;
+      margin-bottom: 16px;
+      text-align: center;
     }
     .order-box {
-      background:#fff; border:1px solid #ccc;
-      border-radius:8px; padding:24px;
-      box-shadow:0 2px 6px rgba(0,0,0,0.1);
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 24px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
     .order-header {
-      margin-bottom:16px; font-size:0.95em; color:#555;
+      margin-bottom: 16px;
+      font-size: 0.95em;
+      color: #555;
     }
-    .order-header span { margin-right:24px; }
-
+    .order-header span {
+      margin-right: 24px;
+    }
     table {
-      width:100%; border-collapse:collapse; margin-bottom:16px;
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
     }
     table th, table td {
-      padding:8px; border-bottom:1px solid #eee; font-size:0.9em; text-align:left;
+      padding: 8px;
+      border-bottom: 1px solid #eee;
+      font-size: 0.9em;
+      text-align: left;
     }
-    table th { background:#f0f0f0; color:#333; font-weight:600; }
-    .summary-row td { font-weight:600; }
+    table th {
+      background: #f0f0f0;
+      color: #333;
+      font-weight: 600;
+    }
+    .summary-row td {
+      font-weight: 600;
+    }
 
+    /* マイページへ戻るボタン（幅を約1/3に） */
     .btn-back {
-      display:inline-block; margin-top:12px;
-      padding:8px 20px; background:#4a90e2; color:#fff;
-      text-decoration:none; border-radius:4px; font-size:0.95em;
+      display: block;
+      width: 33%;             /* コンテナ幅の約1/3 */
+      max-width: 200px;       /* 必要に応じて上限を設定 */
+      margin: 0 auto;         /* 中央寄せ */
+      padding: 6px 0;
+      background: #4a90e2;
+      color: #fff;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 0.95em;
     }
-    .btn-back:hover { background:#357ab8; }
+    .btn-back:hover {
+      background: #357ab8;
+    }
 
-    /* フッター */
-    footer {
-      background:#ddd; text-align:center;
-      padding:12px 0; font-size:0.9em;
+    /*―― 統一フッター ――*/
+    .footer {
+      background: #cccccc;
+      text-align: center;
+      padding: 12px 0;
+      font-size: 0.85em;
+      color: #555;
     }
-    .footer-links { display:flex; justify-content:center; gap:24px; }
-    .footer-links a { text-decoration:none; color:#333; }
-    .footer-links a:hover { text-decoration:underline; }
+    .footer .footer-links {
+      display: flex; justify-content: center; gap: 24px;
+    }
+    .footer .footer-links a {
+      text-decoration: none; color: #333;
+    }
+    .footer .footer-links a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
 
   <!-- ヘッダー -->
-  <header>
-    <div class="logo">ECサイトロゴ</div>
-    <nav>
+  <header class="header">
+    <div class="logo">Y&I Group</div>
+    <nav class="nav-links">
       <a th:href="@{/products}">商品一覧</a>
       <a th:href="@{/logout-confirm}">ログアウト</a>
-      <a th:href="@{/cart}">🛒 カート</a>
+      <a th:href="@{/cart}">🛒 </a>
     </nav>
   </header>
 
@@ -115,18 +176,15 @@
             </tbody>
             <tfoot>
               <tr class="summary-row">
-                <td>小計</td>
-                <td></td>
+                <td>小計</td><td></td>
                 <td>¥<span th:text="${#numbers.formatInteger(order.subtotal,'#,###')}">2,500</span></td>
               </tr>
               <tr class="summary-row">
-                <td>送料</td>
-                <td></td>
+                <td>送料</td><td></td>
                 <td th:text="${order.shippingFee>0} ? '¥'+#numbers.formatInteger(order.shippingFee,'#,###') : '無料'">無料</td>
               </tr>
               <tr class="summary-row">
-                <td>合計</td>
-                <td></td>
+                <td>合計</td><td></td>
                 <td>¥<span th:text="${#numbers.formatInteger(order.total,'#,###')}">2,500</span></td>
               </tr>
             </tfoot>
@@ -140,7 +198,7 @@
   </main>
 
   <!-- フッター -->
-  <footer>
+  <footer class="footer">
     <div class="footer-links">
       <a th:href="@{/terms}">利用規約</a>
       <a th:href="@{/contact}">お問い合わせ</a>

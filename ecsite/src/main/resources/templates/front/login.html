@@ -4,62 +4,154 @@
   <meta charset="UTF-8"/>
   <title>ログイン | ECサイト</title>
   <style>
-    /* ──────────── ベース ──────────── */
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family:'Meiryo','Segoe UI',sans-serif; background:#f5f5f5; color:#333; display:flex; flex-direction:column; min-height:100vh; }
-
-    /* ──────────── ヘッダー ──────────── */
-    header {
-      background:#ddd; padding:12px 24px; display:flex; align-items:center; justify-content:space-between;
+    /*―― 共通：リセット＆ベース設定 ――*/
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    .logo { font-size:1.4em; font-weight:bold; }
-    .nav-links { display:flex; gap:16px; }
-    .nav-links a { text-decoration:none; color:#333; font-size:1em; }
-    .nav-links a:hover { text-decoration:underline; }
+    html, body {
+      height: 100%;
+    }
+    body {
+      font-family: "Meiryo","Segoe UI",sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: #f5f5f5;
+      color: #333;
+    }
 
-    /* ──────────── メイン ──────────── */
-    main { flex:1; display:flex; justify-content:center; align-items:center; padding:40px 24px; }
+    /*―― 統一ヘッダー ――*/
+    .header {
+      background: #cccccc;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header .logo {
+      font-size: 1.4em;
+      font-weight: bold;
+    }
+    .header .nav-links {
+      display: flex;
+      gap: 0;              /* gap は 0 にして、各リンクに個別パディングを設定 */
+    }
+    .header .nav-links a {
+      display: block;
+      padding: 8px 16px;   /* 横 16px, 縦 8px のパディングでクリック領域を揃える */
+      font-size: 1em;
+      color: #333;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .header .nav-links a:hover {
+      background: #e0e0e0; /* ホバー時に背景色を付けて分かりやすく */
+      text-decoration: none;
+    }
+
+    /*―― メイン領域 ――*/
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 24px;
+    }
     .login-container {
-      background:#fff; border:1px solid #999; border-radius:8px; padding:40px 32px; width:360px;
-      box-shadow:0 2px 8px rgba(0,0,0,0.1);
+      background: #fff;
+      border: 1px solid #999;
+      border-radius: 8px;
+      padding: 40px 32px;
+      width: 360px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
-    .login-container h2 { text-align:center; margin-bottom:24px; font-size:1.4em; color:#333; }
-    .form-group { margin-bottom:20px; }
-    .form-group label { display:block; margin-bottom:6px; font-size:1em; }
+    .login-container h2 {
+      text-align: center;
+      margin-bottom: 24px;
+      font-size: 1.4em;
+      color: #333;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 1em;
+    }
     .form-group input[type="text"],
     .form-group input[type="password"] {
-      width:100%; padding:8px 10px; font-size:1em; border:1px solid #bbb; border-radius:4px;
+      width: 100%;
+      padding: 8px 10px;
+      font-size: 1em;
+      border: 1px solid #bbb;
+      border-radius: 4px;
     }
-    .error { color:#d8000c; font-size:0.9em; margin-top:4px; }
-
+    .error {
+      color: #d8000c;
+      font-size: 0.9em;
+      margin-top: 4px;
+    }
     .btn-login {
-      width:100%; padding:10px 0; background:#4a90e2; color:#fff; border:none; border-radius:4px;
-      font-size:1em; cursor:pointer; margin-top:8px;
+      width: 100%;
+      padding: 10px 0;
+      background-color: #4a90e2;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 1em;
+      cursor: pointer;
+      margin-top: 8px;
     }
-    .btn-login:hover { background:#357ab8; }
-
-    .forgot { text-align:center; margin-top:12px; }
-    .forgot a { font-size:0.9em; color:#555; text-decoration:none; }
-    .forgot a:hover { text-decoration:underline; }
-
-    /* ──────────── フッター ──────────── */
-    footer {
-      background:#ddd; text-align:center; padding:12px 0; font-size:0.9em;
+    .btn-login:hover {
+      background-color: #357ab8;
     }
-    .footer-links { display:flex; justify-content:center; gap:24px; }
-    .footer-links a { text-decoration:none; color:#333; }
-    .footer-links a:hover { text-decoration:underline; }
+    .forgot {
+      text-align: center;
+      margin-top: 12px;
+    }
+    .forgot a {
+      font-size: 0.9em;
+      color: #555;
+      text-decoration: none;
+    }
+    .forgot a:hover {
+      text-decoration: underline;
+    }
+
+    /*―― 統一フッター ――*/
+    .footer {
+      background: #cccccc;
+      text-align: center;
+      padding: 12px 0;
+      font-size: 0.85em;
+      color: #555;
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+    }
+    .footer-links a {
+      text-decoration: none;
+      color: #333;
+    }
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
 
   <!-- ヘッダー -->
-  <header>
-    <div class="logo">ECサイトロゴ</div>
+  <header class="header">
+    <div class="logo">Y&I Group</div>
     <nav class="nav-links">
       <a th:href="@{/login}">ログイン</a>
       <a th:href="@{/register}">会員登録</a>
-      <a th:href="@{/cart}">🛒 カート</a>
+      <a th:href="@{/cart}">🛒 </a>
     </nav>
   </header>
 
@@ -103,7 +195,7 @@
   </main>
 
   <!-- フッター -->
-  <footer>
+  <footer class="footer">
     <div class="footer-links">
       <a th:href="@{/terms}">利用規約</a>
       <a th:href="@{/contact}">お問い合わせ</a>

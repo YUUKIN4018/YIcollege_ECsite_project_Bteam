@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>マイページ</title>
+<style>
+body {
+	font-family: sans-serif;
+	margin: 0;
+	background-color: #fff;
+}
+
+.header, .footer {
+	background-color: #e0e0e0;
+	padding: 15px;
+	text-align: left;
+}
+
+.nav {
+	background-color: #ccc;
+	padding: 10px 20px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.logo {
+	font-size: 28px;
+	font-weight: bold;
+	background-color: white;
+	padding: 10px 40px;
+	border: 1px solid #ccc;
+}
+
+.nav-links {
+	display: flex;
+	gap: 30px;
+}
+
+.main {
+	text-align: center;
+	padding: 40px;
+}
+
+.box {
+	border: 1px solid #999;
+	display: inline-block;
+	padding: 30px;
+	margin-top: 30px;
+}
+
+.box h2 {
+	margin-bottom: 20px;
+}
+
+.user-name {
+	font-size: 22px;
+	margin-bottom: 30px;
+}
+
+.button {
+	display: block;
+	width: 200px;
+	margin: 10px auto;
+	padding: 10px;
+	font-size: 16px;
+	border: 1px solid #444;
+	border-radius: 5px;
+	background-color: white;
+	cursor: pointer;
+	text-decoration: none;
+	color: black;
+}
+
+.button:hover {
+	background-color: #eee;
+}
+</style>
+</head>
+<body>
+
+	<div class="header">ログインユーザー</div>
+
+	<div class="nav">
+		<div class="logo">ロゴ</div>
+		<div class="nav-links">
+			<a href="#" class="button">ログインリンク</a> <a href="#" class="button">会員登録リンク</a>
+			<span style="font-size: 24px;">🛒</span>
+		</div>
+	</div>
+
+	<div class="main">
+		<div class="box">
+			<h2>マイページ</h2>
+			<div class="user-name">
+				ユーザー名：<span th:text="${userName}">山田 太郎</span>
+			</div>
+			<a th:href="@{/user/edit}" class="button">ユーザー情報</a> <a
+				th:href="@{/order/history}" class="button">購入履歴確認</a>
+		</div>
+	</div>
+
+	<div class="footer">利用規約リンク お問い合わせリンク</div>
+
+</body>
+</html>

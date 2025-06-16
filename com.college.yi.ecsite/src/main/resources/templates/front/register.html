@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>新規会員登録</title>
+</head>
+<body>
+
+	<h2>新規会員登録</h2>
+
+	<!-- 登録失敗時のエラーメッセージ -->
+	<div th:if="${errorMessage}" style="color: red;">
+		<p th:text="${errorMessage}"></p>
+	</div>
+
+	<form th:action="@{/register}" th:object="${registerForm}"
+		method="post">
+
+		<label>姓：</label> <input type="text" th:field="*{last_name}" /> <span
+			style="color: red;" th:if="${#fields.hasErrors('last_name')}"
+			th:errors="*{last_name}"></span> <br /> <label>名：</label> <input
+			type="text" th:field="*{first_name}" /> <span style="color: red;"
+			th:if="${#fields.hasErrors('first_name')}" th:errors="*{first_name}"></span>
+		<br /> <label>メールアドレス：</label> <input type="email" th:field="*{email}" />
+		<span style="color: red;" th:if="${#fields.hasErrors('email')}"
+			th:errors="*{email}"></span> <br /> <label>パスワード：</label> <input
+			type="password" th:field="*{password}" /> <span style="color: red;"
+			th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+		<br /> <label>確認用パスワード：</label> <input type="password"
+			th:field="*{password_confirm}" /> <span style="color: red;"
+			th:if="${#fields.hasErrors('password_confirm')}"
+			th:errors="*{password_confirm}"></span> <br /> <label>生年月日：</label> <input
+			type="date" th:field="*{birth_date}" /> <br />
+
+		<button type="submit">登録</button>
+	</form>
+
+</body>
+</html>

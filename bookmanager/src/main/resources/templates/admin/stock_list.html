@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>在庫管理 | 管理画面</title>
+    <meta charset="UTF-8">
+    <style>
+        /* シンプルなCSS（必要に応じて拡張） */
+        body { font-family: "メイリオ", sans-serif; margin: 0; background: #fafafa; }
+        .header, .footer { background: #eee; padding: 16px; }
+        .container { max-width: 900px; margin: 40px auto; background: #fff; padding: 32px 24px 24px; border-radius: 8px; }
+        h1 { text-align: center; margin: 0 0 16px 0; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border-bottom: 1px solid #ddd; padding: 10px; text-align: center; }
+        th { background: #f3f3f3; }
+        .image-cell img { width: 48px; height: 48px; object-fit: cover; border: 1px solid #aaa; }
+        .actions button { margin: 0 2px; }
+        .pagination { text-align: center; margin-top: 24px; }
+        .pagination button, .pagination span { margin: 0 4px; padding: 4px 12px; }
+        .message { color: green; text-align: center; margin-bottom: 16px; }
+        .error-message { color: red; text-align: center; margin-bottom: 16px; }
+        input[type="number"] { width: 64px; padding: 2px; text-align: right; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <span style="font-size: 1.5em; background: #fff; padding: 4px 18px; border-radius: 4px;">ロゴ</span>
+        <span style="float:right;">
+            <a href="#" style="margin-right: 24px;">ダッシュボード</a>
+            <a href="#">ログアウト</a>
+        </span>
+    </div>
+    <div class="container">
+        <h1>在庫管理</h1>
+        
+        <!-- メッセージ表示 -->
+        <div th:if="${successMessage}" class="message" th:text="${successMessage}"></div>
+        <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>商品画像</th>
+                    <th>商品ID</th>
+                    <th>商品名</th>
+                    <th>変更前在庫数</th>
+                    <th>変更後在庫数</th>
+                    <th>更新</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="product : ${products}">
+                    <td class="image-cell">
+                        <!-- 商品画像がある場合のみ表示、なければダミー画像 -->
+                        <img th:src="${productimage.imageUrl != null ? item.imageUrl : '/img/no-image.png'}" alt="商品画像">
+                    </td>
+                    <td th:text="${product.productId}"></td>
+                    <td th:text="${product.name}"></td>
+                    <td th:text="${product.description}"></td>
+                    <td th:text="'¥' + ${#numbers.formatDecimal(product.price, 0, 'COMMA', 2, 'POINT')}"></td>
+                    <!-- 在庫編集フォーム -->
+                    <td>
+                        <form th:action="@{/admin/stocks/update}" method="post" style="display:inline;">
+                            <input type="hidden" th:name="productId" th:value="${product.productId}" />
+                            <input type="number" th:name="stockQuantity" min="0" th:value="${product.stockQuantity}" required />
+                            <button type="submit">更新</button>
+                        </form>
+                    </td>
+                    <td class="actions">
+                        <!-- 編集・削除ボタンは今回は非表示/コメントアウト。必要なら復活可能 -->
+                        <!-- <button>編集</button>
+                        <button>削除</button> -->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- ページネーション -->
+        <div class="pagination">
+            <form th:action="@{/admin/stocks}" method="get" style="display:inline;">
+                <button type="submit" th:disabled="${currentPage == 1}" th:name="page" th:value="${currentPage - 1}">&lt;</button>
+            </form>
+            <span th:text="${currentPage}"></span>
+            <form th:action="@{/admin/stocks}" method="get" style="display:inline;">
+                <button type="submit" th:disabled="${currentPage == totalPages}" th:name="page" th:value="${currentPage + 1}">&gt;</button>
+            </form>
+        </div>
+    </div>
+    <div class="footer" style="text-align: center; font-size: 0.95em; margin-top: 60px;">
+        © 2025 OO Inc.
+    </div>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>サーバーエラー</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="error-container">
+        <h1>サーバーエラーが発生しました</h1>
+        <p th:text="${error}">申し訳ありませんが、サーバーでエラーが発生しました。</p>
+        <p>しばらく時間をおいて再度お試しください。</p>
+        <div class="error-actions">
+            <a th:href="@{/}" class="btn btn-primary">トップページに戻る</a>
+            <a th:href="@{/admin/login}" class="btn btn-secondary">管理者ログイン</a>
+        </div>
+    </div>
+</body>
+</html> 

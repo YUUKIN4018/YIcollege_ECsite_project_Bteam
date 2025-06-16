@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>アクセス権限エラー</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="error-container">
+        <h1>アクセス権限がありません</h1>
+        <p>このページにアクセスする権限がありません。</p>
+        <div class="error-actions">
+            <a th:href="@{/}" class="btn btn-primary">トップページに戻る</a>
+            <a th:href="@{/admin/login}" class="btn btn-secondary">管理者ログイン</a>
+        </div>
+    </div>
+</body>
+</html> 
